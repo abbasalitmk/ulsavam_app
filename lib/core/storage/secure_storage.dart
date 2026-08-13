@@ -8,7 +8,8 @@ class SecureStorageService {
   static const _keySelectedDistrictSlug = 'selected_district_slug';
   static const _keySelectedDistrictName = 'selected_district_name';
 
-  Future<void> saveTokens({required String access, required String refresh}) async {
+  Future<void> saveTokens(
+      {required String access, required String refresh}) async {
     await _storage.write(key: _keyAccessToken, value: access);
     await _storage.write(key: _keyRefreshToken, value: refresh);
   }
@@ -26,7 +27,8 @@ class SecureStorageService {
     await _storage.delete(key: _keyRefreshToken);
   }
 
-  Future<void> saveSelectedDistrict({required String slug, required String name}) async {
+  Future<void> saveSelectedDistrict(
+      {required String slug, required String name}) async {
     await _storage.write(key: _keySelectedDistrictSlug, value: slug);
     await _storage.write(key: _keySelectedDistrictName, value: name);
   }

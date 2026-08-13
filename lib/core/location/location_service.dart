@@ -37,7 +37,8 @@ class LocationService {
       return null;
     }
 
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium);
   }
 
   Future<String?> detectDistrictName() async {
@@ -45,7 +46,8 @@ class LocationService {
       final position = await getCurrentPosition();
       if (position == null) return null;
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      List<Placemark> placemarks = await Geocoding()
+          .placemarkFromCoordinates(position.latitude, position.longitude);
       if (placemarks.isNotEmpty) {
         final placemark = placemarks.first;
         final subAdmin = placemark.subAdministrativeArea ?? '';

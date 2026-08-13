@@ -16,32 +16,28 @@ class EventsRepository {
     String? search,
   }) async {
     final queryParams = <String, dynamic>{};
-    if (districtSlug != null && districtSlug.isNotEmpty) queryParams['district'] = districtSlug;
+    if (districtSlug != null && districtSlug.isNotEmpty)
+      queryParams['district'] = districtSlug;
     if (date != null && date.isNotEmpty) queryParams['date'] = date;
-    if (category != null && category.isNotEmpty) queryParams['category'] = category;
-    if (verifiedOnly != null) queryParams['verified_only'] = verifiedOnly.toString();
+    if (category != null && category.isNotEmpty)
+      queryParams['category'] = category;
+    if (verifiedOnly != null)
+      queryParams['verified_only'] = verifiedOnly.toString();
     if (search != null && search.isNotEmpty) queryParams['search'] = search;
 
-    final response = await apiClient.dio.get(ApiEndpoints.events, queryParameters: queryParams);
+    final response = await apiClient.dio
+        .get(ApiEndpoints.events, queryParameters: queryParams);
     final List results = response.data['results'] ?? response.data;
     return results.map((item) => EventModel.fromJson(item)).toList();
   }
 
   Future<List<EventModel>> getHappeningNow({String? districtSlug}) async {
     final queryParams = <String, dynamic>{};
-    if (districtSlug != null && districtSlug.isNotEmpty) queryParams['district'] = districtSlug;
+    if (districtSlug != null && districtSlug.isNotEmpty)
+      queryParams['district'] = districtSlug;
 
-    final response = await apiClient.dio.get(ApiEndpoints.happeningNow, queryParameters: queryParams);
-    final List results = response.data;
-    return results.map((item) => EventModel.fromJson(item)).toList();
-  }
-
-  Future<List<EventModel>> getCalendarEvents({String? districtSlug, String? month}) async {
-    final queryParams = <String, dynamic>{};
-    if (districtSlug != null && districtSlug.isNotEmpty) queryParams['district'] = districtSlug;
-    if (month != null && month.isNotEmpty) queryParams['month'] = month;
-
-    final response = await apiClient.dio.get(ApiEndpoints.calendar, queryParameters: queryParams);
+    final response = await apiClient.dio
+        .get(ApiEndpoints.happeningNow, queryParameters: queryParams);
     final List results = response.data;
     return results.map((item) => EventModel.fromJson(item)).toList();
   }
@@ -62,12 +58,14 @@ class EventsRepository {
   }
 
   Future<Map<String, dynamic>> confirmEvent(int eventId) async {
-    final response = await apiClient.dio.post(ApiEndpoints.eventConfirm(eventId));
+    final response =
+        await apiClient.dio.post(ApiEndpoints.eventConfirm(eventId));
     return response.data;
   }
 
   Future<List<AttendeeModel>> getAttendees(int eventId) async {
-    final response = await apiClient.dio.get(ApiEndpoints.eventAttendees(eventId));
+    final response =
+        await apiClient.dio.get(ApiEndpoints.eventAttendees(eventId));
     final List results = response.data;
     return results.map((item) => AttendeeModel.fromJson(item)).toList();
   }

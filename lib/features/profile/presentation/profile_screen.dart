@@ -36,92 +36,116 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 48,
-              backgroundColor: AppColors.primaryContainer,
-              backgroundImage: user.avatar != null && user.avatar!.isNotEmpty ? NetworkImage(user.avatar!) : null,
-              child: user.avatar == null || user.avatar!.isEmpty
-                  ? Text(user.displayName[0], style: AppTypography.displayLarge.copyWith(color: Colors.white, fontSize: 36))
-                  : null,
-            ),
-            const SizedBox(height: 16),
-            Text(user.displayName, style: AppTypography.headlineLarge),
-            const SizedBox(height: 4),
-            Text(user.email ?? user.phoneNumber ?? '', style: AppTypography.bodySmall),
-
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(12),
+      body: RefreshIndicator(
+        onRefresh: () => ref.read(authProvider.notifier).checkCurrentUser(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 48,
+                backgroundColor: AppColors.primaryContainer,
+                backgroundImage: user.displayImageUrl != null &&
+                        user.displayImageUrl!.isNotEmpty
+                    ? NetworkImage(user.displayImageUrl!)
+                    : null,
+                child: user.displayImageUrl == null ||
+                        user.displayImageUrl!.isEmpty
+                    ? Text(user.displayName[0],
+                        style: AppTypography.displayLarge
+                            .copyWith(color: Colors.white, fontSize: 36))
+                    : null,
               ),
-              child: Row(
-                children: [
-                  const Icon(Icons.security, color: AppColors.secondary),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Privacy Shield Status', style: AppTypography.titleMedium.copyWith(fontSize: 14)),
-                        Text(
-                          user.isInfoRevealed ? 'Name & photo visible to others' : 'Name & photo hidden in attendee lists',
-                          style: AppTypography.bodySmall.copyWith(fontSize: 12),
-                        ),
-                      ],
+              const SizedBox(height: 16),
+              Text(user.displayName, style: AppTypography.headlineLarge),
+              const SizedBox(height: 4),
+              Text(user.email ?? user.phoneNumber ?? '',
+                  style: AppTypography.bodySmall),
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.security, color: AppColors.secondary),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Privacy Shield Status',
+                              style: AppTypography.titleMedium
+                                  .copyWith(fontSize: 14)),
+                          Text(
+                            user.isInfoRevealed
+                                ? 'Name & photo visible to others'
+                                : 'Name & photo hidden in attendee lists',
+                            style:
+                                AppTypography.bodySmall.copyWith(fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Switch(
-                    value: user.isInfoRevealed,
-                    activeColor: AppColors.primary,
-                    onChanged: (val) {
-                      ref.read(authProvider.notifier).updateProfile({'is_info_revealed': val});
-                    },
-                  ),
-                ],
+                    Switch(
+                      value: user.isInfoRevealed,
+                      activeColor: AppColors.primary,
+                      onChanged: (val) {
+                        ref
+                            .read(authProvider.notifier)
+                            .updateProfile({'is_info_revealed': val});
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-
-            const SizedBox(height: 24),
-            ListTile(
-              leading: const Icon(Icons.hourglass_top, color: AppColors.primary),
-              title: Text('My Pending Event Submissions', style: AppTypography.titleMedium.copyWith(fontSize: 16)),
-              subtitle: const Text('Track 3-verification progress for events you submitted'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const PendingVerificationScreen()),
-                );
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.edit, color: AppColors.primary),
-              title: Text('Edit Profile & Settings', style: AppTypography.titleMedium.copyWith(fontSize: 16)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const EditProfileScreen()),
-                );
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: AppColors.error),
-              title: Text('Log Out', style: AppTypography.titleMedium.copyWith(fontSize: 16, color: AppColors.error)),
-              onTap: () async {
-                await ref.read(authProvider.notifier).logout();
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
+              const SizedBox(height: 24),
+              ListTile(
+                leading:
+                    const Icon(Icons.hourglass_top, color: AppColors.primary),
+                title: Text('My Pending Event Submissions',
+                    style: AppTypography.titleMedium.copyWith(fontSize: 16)),
+                subtitle: const Text(
+                    'Track 3-verification progress for events you submitted'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => const PendingVerificationScreen()),
+                  );
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.edit, color: AppColors.primary),
+                title: Text('Edit Profile & Settings',
+                    style: AppTypography.titleMedium.copyWith(fontSize: 16)),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => const EditProfileScreen()),
+                  );
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.logout, color: AppColors.error),
+                title: Text('Log Out',
+                    style: AppTypography.titleMedium
+                        .copyWith(fontSize: 16, color: AppColors.error)),
+                onTap: () async {
+                  await ref.read(authProvider.notifier).logout();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -79,18 +79,26 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             const SizedBox(height: 24),
             SwitchListTile(
               title: const Text('Reveal My Name & Photo'),
-              subtitle: const Text('Allow other users to see your name on event attendee lists.'),
+              subtitle: const Text(
+                  'Allow other users to see your name on event attendee lists.'),
               value: user?.isInfoRevealed ?? false,
               activeColor: AppColors.primary,
               onChanged: (val) {
-                ref.read(authProvider.notifier).updateProfile({'is_info_revealed': val});
+                ref
+                    .read(authProvider.notifier)
+                    .updateProfile({'is_info_revealed': val});
               },
             ),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _isSaving ? null : _saveProfile,
               child: _isSaving
-                  ? const CircularProgressIndicator(color: Colors.white)
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                          color: Colors.white, strokeWidth: 2),
+                    )
                   : const Text('Save Changes'),
             ),
           ],

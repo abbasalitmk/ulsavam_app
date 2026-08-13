@@ -44,22 +44,51 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<String> requestOtp({required String identifier, required String method}) async {
+  Future<String> requestOtp(
+      {required String identifier, required String method}) async {
     state = AuthState(user: state.user, isLoading: true);
     try {
-      final msg = await repository.requestOtp(identifier: identifier, method: method);
+      final msg =
+          await repository.requestOtp(identifier: identifier, method: method);
       state = AuthState(user: state.user, isLoading: false);
       return msg;
     } catch (e) {
-      state = AuthState(user: state.user, isLoading: false, error: e.toString());
+      state =
+          AuthState(user: state.user, isLoading: false, error: e.toString());
       rethrow;
     }
   }
 
-  Future<void> verifyOtp({required String identifier, required String code}) async {
+  Future<void> verifyOtp(
+      {required String identifier, required String code}) async {
     state = AuthState(user: state.user, isLoading: true);
     try {
-      final user = await repository.verifyOtp(identifier: identifier, code: code);
+      final user =
+          await repository.verifyOtp(identifier: identifier, code: code);
+      state = AuthState(user: user, isLoading: false);
+    } catch (e) {
+      state = AuthState(user: null, isLoading: false, error: e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> register(Map<String, dynamic> fields) async {
+    state = AuthState(user: state.user, isLoading: true);
+    try {
+      final user = await repository.register(fields);
+      state = AuthState(user: user, isLoading: false);
+    } catch (e) {
+      state = AuthState(user: null, isLoading: false, error: e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> login(
+      {required String username, required String password}) async {
+    state = AuthState(user: state.user, isLoading: true);
+    try {
+      final user =
+          await repository.login(username: username, password: password);
       state = AuthState(user: user, isLoading: false);
     } catch (e) {
       state = AuthState(user: null, isLoading: false, error: e.toString());
@@ -78,7 +107,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final updatedUser = await repository.updateProfile(data);
       state = AuthState(user: updatedUser, isLoading: false);
     } catch (e) {
-      state = AuthState(user: state.user, isLoading: false, error: e.toString());
+      state =
+          AuthState(user: state.user, isLoading: false, error: e.toString());
       rethrow;
     }
   }

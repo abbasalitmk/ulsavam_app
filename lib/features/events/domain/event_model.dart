@@ -51,9 +51,15 @@ class EventModel {
       title: json['title'] ?? '',
       description: json['description'],
       category: json['category'] ?? 'community',
-      districtId: json['district'] is int ? json['district'] : (json['district_details']?['id'] ?? 0),
-      districtName: json['district_name'] ?? json['district_details']?['name'] ?? 'Kerala',
-      districtSlug: json['district_slug'] ?? json['district_details']?['slug'] ?? 'kerala',
+      districtId: json['district'] is int
+          ? json['district']
+          : (json['district_details']?['id'] ?? 0),
+      districtName: json['district_name'] ??
+          json['district_details']?['name'] ??
+          'Kerala',
+      districtSlug: json['district_slug'] ??
+          json['district_details']?['slug'] ??
+          'kerala',
       venueName: json['venue_name'] ?? '',
       address: json['address'],
       latitude: (json['latitude'] as num?)?.toDouble(),

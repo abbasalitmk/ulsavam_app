@@ -10,8 +10,10 @@ class ApiClient {
     dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
+        // Render's free tier can take 30-50s to wake a sleeping instance,
+        // so the timeout needs enough headroom to survive a cold start.
+        connectTimeout: const Duration(seconds: 45),
+        receiveTimeout: const Duration(seconds: 45),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -41,11 +43,14 @@ class ApiClient {
 
                 if (refreshResponse.statusCode == 200) {
                   final newAccess = refreshResponse.data['access'];
-                  final newRefresh = refreshResponse.data['refresh'] ?? refreshToken;
-                  await storageService.saveTokens(access: newAccess, refresh: newRefresh);
+                  final newRefresh =
+                      refreshResponse.data['refresh'] ?? refreshToken;
+                  await storageService.saveTokens(
+                      access: newAccess, refresh: newRefresh);
 
                   // Retry original request
-                  error.requestOptions.headers['Authorization'] = 'Bearer $newAccess';
+                  error.requestOptions.headers['Authorization'] =
+                      'Bearer $newAccess';
                   final retriedResponse = await dio.fetch(error.requestOptions);
                   return handler.resolve(retriedResponse);
                 }

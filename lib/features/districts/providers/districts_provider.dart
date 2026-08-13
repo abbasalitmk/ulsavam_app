@@ -13,5 +13,7 @@ final districtsListProvider = FutureProvider<List<DistrictModel>>((ref) async {
   return await repo.getDistricts();
 });
 
-final selectedDistrictSlugProvider = StateProvider<String>((ref) => 'kozhikode');
-final selectedDistrictNameProvider = StateProvider<String>((ref) => 'Kozhikode');
+final selectedDistrictSlugProvider =
+    StateProvider<String>((ref) => 'kozhikode');
+final selectedDistrictNameProvider =
+    StateProvider<String>((ref) => 'Kozhikode');

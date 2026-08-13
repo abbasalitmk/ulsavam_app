@@ -11,10 +11,12 @@ class VerifyConfirmationSheet extends ConsumerStatefulWidget {
   const VerifyConfirmationSheet({super.key, required this.event});
 
   @override
-  ConsumerState<VerifyConfirmationSheet> createState() => _VerifyConfirmationSheetState();
+  ConsumerState<VerifyConfirmationSheet> createState() =>
+      _VerifyConfirmationSheetState();
 }
 
-class _VerifyConfirmationSheetState extends ConsumerState<VerifyConfirmationSheet> {
+class _VerifyConfirmationSheetState
+    extends ConsumerState<VerifyConfirmationSheet> {
   bool _isConfirming = false;
 
   Future<void> _handleConfirm() async {
@@ -62,7 +64,8 @@ class _VerifyConfirmationSheetState extends ConsumerState<VerifyConfirmationShee
               const Icon(Icons.security, color: AppColors.secondary, size: 28),
               const SizedBox(width: 12),
               Expanded(
-                child: Text('Verify Event Legitimacy', style: AppTypography.headlineLarge.copyWith(fontSize: 20)),
+                child: Text('Verify Event Legitimacy',
+                    style: AppTypography.headlineLarge.copyWith(fontSize: 20)),
               ),
               IconButton(
                 icon: const Icon(Icons.close),
@@ -81,7 +84,9 @@ class _VerifyConfirmationSheetState extends ConsumerState<VerifyConfirmationShee
           LinearProgressIndicator(
             value: progress,
             backgroundColor: AppColors.surfaceContainerHigh,
-            color: progress >= 1.0 ? AppColors.tertiaryContainer : AppColors.secondary,
+            color: progress >= 1.0
+                ? AppColors.tertiaryContainer
+                : AppColors.secondary,
             minHeight: 10,
             borderRadius: BorderRadius.circular(5),
           ),
@@ -89,23 +94,33 @@ class _VerifyConfirmationSheetState extends ConsumerState<VerifyConfirmationShee
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('$count of 3 Confirmations', style: AppTypography.labelMedium),
-              Text(progress >= 1.0 ? 'VERIFIED' : 'PENDING', style: AppTypography.labelMedium.copyWith(color: AppColors.primary)),
+              Text('$count of 3 Confirmations',
+                  style: AppTypography.labelMedium),
+              Text(progress >= 1.0 ? 'VERIFIED' : 'PENDING',
+                  style: AppTypography.labelMedium
+                      .copyWith(color: AppColors.primary)),
             ],
           ),
 
           const SizedBox(height: 24),
           Text(
             'By tapping "Verify", you confirm that this event is real, accurately described, and taking place at the specified venue.',
-            style: AppTypography.bodySmall.copyWith(fontStyle: FontStyle.italic),
+            style:
+                AppTypography.bodySmall.copyWith(fontStyle: FontStyle.italic),
           ),
 
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: _isConfirming ? null : _handleConfirm,
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.secondary),
+            style:
+                ElevatedButton.styleFrom(backgroundColor: AppColors.secondary),
             child: _isConfirming
-                ? const CircularProgressIndicator(color: Colors.white)
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                        color: Colors.white, strokeWidth: 2),
+                  )
                 : const Text('Confirm & Verify Event'),
           ),
           const SizedBox(height: 16),

@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import '../providers/auth_provider.dart';
-import '../../events/presentation/home_screen.dart';
+import '../../shell/presentation/main_shell.dart';
+import 'auth_error_utils.dart';
+import 'register_screen.dart';
 
 class OTPScreen extends ConsumerStatefulWidget {
   final String identifier;
@@ -36,15 +38,25 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login Successful! Welcome to Ulsavam.')),
+          const SnackBar(
+              content: Text('Login Successful! Welcome to Ulsavam.')),
         );
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (_) => const MainShell()),
           (route) => false,
         );
       }
     } catch (e) {
-      setState(() => _errorMessage = 'Invalid or expired OTP code.');
+      if (isAccountNotFound(e) && mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => RegisterScreen(initialEmail: widget.identifier),
+          ),
+        );
+        return;
+      }
+      setState(() => _errorMessage =
+          authErrorMessage(e, fallback: 'Invalid or expired OTP code.'));
     }
   }
 
@@ -77,7 +89,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
               keyboardType: TextInputType.number,
               maxLength: 6,
               textAlign: TextAlign.center,
-              style: AppTypography.displayLarge.copyWith(fontSize: 32, letterSpacing: 8),
+              style: AppTypography.displayLarge
+                  .copyWith(fontSize: 32, letterSpacing: 8),
               decoration: const InputDecoration(
                 hintText: '123456',
                 counterText: '',
@@ -94,7 +107,12 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
             ElevatedButton(
               onPressed: authState.isLoading ? null : _verifyOtp,
               child: authState.isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                          color: Colors.white, strokeWidth: 2),
+                    )
                   : const Text('Verify & Login'),
             ),
           ],

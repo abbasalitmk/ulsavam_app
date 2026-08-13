@@ -5,16 +5,18 @@ import '../../../core/theme/app_typography.dart';
 import '../../../core/location/location_service.dart';
 import '../providers/districts_provider.dart';
 import 'district_picker_screen.dart';
-import '../../events/presentation/home_screen.dart';
+import '../../shell/presentation/main_shell.dart';
 
 class DistrictDetectionScreen extends ConsumerStatefulWidget {
   const DistrictDetectionScreen({super.key});
 
   @override
-  ConsumerState<DistrictDetectionScreen> createState() => _DistrictDetectionScreenState();
+  ConsumerState<DistrictDetectionScreen> createState() =>
+      _DistrictDetectionScreenState();
 }
 
-class _DistrictDetectionScreenState extends ConsumerState<DistrictDetectionScreen> {
+class _DistrictDetectionScreenState
+    extends ConsumerState<DistrictDetectionScreen> {
   bool _isDetecting = false;
   final _locationService = LocationService();
 
@@ -25,12 +27,13 @@ class _DistrictDetectionScreenState extends ConsumerState<DistrictDetectionScree
 
     if (detectedDistrict != null) {
       ref.read(selectedDistrictNameProvider.notifier).state = detectedDistrict;
-      ref.read(selectedDistrictSlugProvider.notifier).state = detectedDistrict.toLowerCase();
+      ref.read(selectedDistrictSlugProvider.notifier).state =
+          detectedDistrict.toLowerCase();
     }
 
     if (mounted) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        MaterialPageRoute(builder: (_) => const MainShell()),
       );
     }
   }
@@ -67,7 +70,8 @@ class _DistrictDetectionScreenState extends ConsumerState<DistrictDetectionScree
               const SizedBox(height: 12),
               Text(
                 'Ulsavam shows hyperlocal temple poorams, concerts & meetups in your district.',
-                style: AppTypography.bodyLarge.copyWith(color: AppColors.onSurfaceVariant),
+                style: AppTypography.bodyLarge
+                    .copyWith(color: AppColors.onSurfaceVariant),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 48),
@@ -77,26 +81,32 @@ class _DistrictDetectionScreenState extends ConsumerState<DistrictDetectionScree
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        child: CircularProgressIndicator(
+                            color: Colors.white, strokeWidth: 2),
                       )
                     : const Icon(Icons.near_me),
-                label: Text(_isDetecting ? 'Detecting Location...' : 'Auto-Detect District'),
+                label: Text(_isDetecting
+                    ? 'Detecting Location...'
+                    : 'Auto-Detect District'),
               ),
               const SizedBox(height: 16),
               OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const DistrictPickerScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const DistrictPickerScreen()),
                   );
                 },
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),
                   side: const BorderSide(color: AppColors.primary, width: 1.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
                 child: Text(
                   'Select District Manually',
-                  style: AppTypography.labelMedium.copyWith(color: AppColors.primary),
+                  style: AppTypography.labelMedium
+                      .copyWith(color: AppColors.primary),
                 ),
               ),
             ],

@@ -17,17 +17,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, String>> _pages = [
     {
       'title': 'Discover Kerala Festivals',
-      'description': 'Experience temple poorams, church feasts, DJ nights & beach meetups happening right in your district.',
+      'description':
+          'Experience temple poorams, church feasts, DJ nights & beach meetups happening right in your district.',
       'icon': 'temple_hindu',
     },
     {
       'title': 'Hyperlocal & Real-Time',
-      'description': 'Filtered by your detected location. Know what is happening today and this week around you.',
+      'description':
+          'Filtered by your detected location. Know what is happening today and this week around you.',
       'icon': 'location_on',
     },
     {
       'title': 'Community Verified',
-      'description': 'Events are verified by 3 real locals before going live to guarantee authentic event listings.',
+      'description':
+          'Events are verified by 3 real locals before going live to guarantee authentic event listings.',
       'icon': 'verified',
     },
   ];
@@ -43,7 +46,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               alignment: Alignment.topRight,
               child: TextButton(
                 onPressed: () => _navigateToNext(context),
-                child: Text('Skip', style: AppTypography.labelMedium.copyWith(color: AppColors.primary)),
+                child: Text('Skip',
+                    style: AppTypography.labelMedium
+                        .copyWith(color: AppColors.primary)),
               ),
             ),
             Expanded(
@@ -66,7 +71,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            index == 0 ? Icons.temple_hindu : index == 1 ? Icons.location_on : Icons.verified,
+                            index == 0
+                                ? Icons.temple_hindu
+                                : index == 1
+                                    ? Icons.location_on
+                                    : Icons.verified,
                             size: 64,
                             color: AppColors.primary,
                           ),
@@ -81,7 +90,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           page['description']!,
                           textAlign: TextAlign.center,
-                          style: AppTypography.bodyLarge.copyWith(color: AppColors.onSurfaceVariant),
+                          style: AppTypography.bodyLarge
+                              .copyWith(color: AppColors.onSurfaceVariant),
                         ),
                       ],
                     ),
@@ -98,7 +108,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   width: _currentPage == index ? 24 : 8,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: _currentPage == index ? AppColors.primary : AppColors.outlineVariant,
+                    color: _currentPage == index
+                        ? AppColors.primary
+                        : AppColors.outlineVariant,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
@@ -110,12 +122,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_currentPage < _pages.length - 1) {
-                    _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
                   } else {
                     _navigateToNext(context);
                   }
                 },
-                child: Text(_currentPage == _pages.length - 1 ? 'Get Started' : 'Next'),
+                child: Text(
+                    _currentPage == _pages.length - 1 ? 'Get Started' : 'Next'),
               ),
             ),
           ],
